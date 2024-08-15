@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   loginUserService,
   registerUserService,
-} from "../services/user.authenticate";
+} from "../services/user.service";
 import logger from "../utils/logger";
 import APIError, { HttpStatusCode } from "../middlewares/errorMiddleware";
 import { localConstant } from "../utils/constant";
