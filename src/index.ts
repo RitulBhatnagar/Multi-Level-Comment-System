@@ -4,6 +4,7 @@ import logger from "./utils/logger";
 dotenv.config();
 import userRoute from "./routes/user.routes";
 import commentRoutes from "./routes/comment.routes";
+import postRoutes from "./routes/post.routes";
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/api", userRoute);
 app.use("/api", commentRoutes);
+app.use("/api", postRoutes);
 
 app.get("/", (req, res) => {
   logger.info("Received request for root path");
