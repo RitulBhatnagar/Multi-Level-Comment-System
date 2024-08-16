@@ -19,13 +19,13 @@ import { localConstant } from "../utils/constant";
 export const createComment = async (req: Request, res: Response) => {
   const { text } = req.body;
   const { postId } = req.params;
-  const userId = req.body.user.id; // Assuming user ID is attached to request by auth middleware
+  const { userId: authorId } = req.body.user; // Assuming user ID is attached to request by auth middleware
 
   try {
     const comment = await createCommentService(
       parseInt(postId as string),
       text,
-      userId
+      authorId
     );
     return res.status(HttpStatusCode.CREATED).json({
       message: "Comment created successfully",
@@ -55,13 +55,13 @@ export const createComment = async (req: Request, res: Response) => {
  */
 export const replyToComment = async (req: Request, res: Response) => {
   const { text } = req.body;
-  const userId = req.body.user.id; // Assuming user ID is attached to request by auth middleware
+  const { userId: authorId } = req.body.user; // Assuming user ID is attached to request by auth middleware
   const { postId, commentId } = req.params;
   try {
     const reply = await replyToCommentService(
       parseInt(commentId as string),
       text,
-      userId,
+      authorId,
       parseInt(postId as string)
     );
     return res.status(HttpStatusCode.CREATED).json({
@@ -131,7 +131,7 @@ export const expandParentLevelComments = async (
   res: Response
 ) => {
   const { postId, commentId } = req.params;
-  const { page = "1", pageSize = "10" } = req.query;
+  const { page, pageSize } = req.query;
 
   try {
     const { comments, total } = await expandParentLevelCommentsService(

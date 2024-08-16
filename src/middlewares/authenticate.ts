@@ -11,7 +11,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 interface DecodedToken {
-  userId: string;
+  id: string;
   exp: number;
 }
 
@@ -52,7 +52,7 @@ const checkAuthToken = async (
         .json({ message: "Unauthorized: Token has expired" });
     }
 
-    req.user = { userId: decodedToken.userId };
+    req.body.user = { userId: decodedToken.id };
     next();
   } catch (error) {
     console.log("Token validation error:", error);

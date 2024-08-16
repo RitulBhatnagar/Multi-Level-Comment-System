@@ -6,7 +6,8 @@ import { createPostService } from "../services/post.service";
 
 export const createPost = async (req: Request, res: Response) => {
   const { content, title } = req.body;
-  const authorId = req.body.user.id;
+  const { userId: authorId } = req.body.user;
+  console.log(authorId);
   try {
     const post = await createPostService(authorId, content, title);
     return res.status(HttpStatusCode.CREATED).json({

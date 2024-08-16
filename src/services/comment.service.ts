@@ -11,6 +11,19 @@ export const createCommentService = async (
   authorId: number
 ) => {
   try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+    if (!post) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.POST_NOT_FOUND
+      );
+    }
     const createComment = await prisma.comment.create({
       data: {
         text: comment,
@@ -21,6 +34,9 @@ export const createCommentService = async (
     return createComment;
   } catch (error) {
     logger.error("Error while creating comment", error);
+    if (error instanceof APIError) {
+      throw error;
+    }
     throw new APIError(
       ErrorCommonStrings.INTERNAL_SERVER_ERROR,
       HttpStatusCode.INTERNAL_ERROR,
@@ -37,6 +53,32 @@ export const replyToCommentService = async (
   postId: number
 ) => {
   try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+    if (!post) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.POST_NOT_FOUND
+      );
+    }
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.COMMENT_NOT_FOUND
+      );
+    }
     const createReply = await prisma.comment.create({
       data: {
         text: reply,
@@ -48,6 +90,9 @@ export const replyToCommentService = async (
     return createReply;
   } catch (error) {
     logger.error("Error while creating reply", error);
+    if (error instanceof APIError) {
+      throw error;
+    }
     throw new APIError(
       ErrorCommonStrings.INTERNAL_SERVER_ERROR,
       HttpStatusCode.INTERNAL_ERROR,
@@ -63,6 +108,19 @@ export const getCommentsForPostService = async (
   sortOrder: string
 ) => {
   try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+    if (!post) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.POST_NOT_FOUND
+      );
+    }
     const comments = await prisma.comment.findMany({
       where: {
         postId: postId,
@@ -102,6 +160,9 @@ export const getCommentsForPostService = async (
     }));
   } catch (error) {
     logger.error("Error while getting comments", error);
+    if (error instanceof APIError) {
+      throw error;
+    }
     throw new APIError(
       ErrorCommonStrings.INTERNAL_SERVER_ERROR,
       HttpStatusCode.INTERNAL_ERROR,
@@ -120,6 +181,33 @@ export const expandParentLevelCommentsService = async (
   pageSize: number
 ) => {
   try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+    if (!post) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.POST_NOT_FOUND
+      );
+    }
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      throw new APIError(
+        ErrorCommonStrings.NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        false,
+        localConstant.COMMENT_NOT_FOUND
+      );
+    }
+
     const [total, comments] = await prisma.$transaction([
       prisma.comment.count({
         where: {

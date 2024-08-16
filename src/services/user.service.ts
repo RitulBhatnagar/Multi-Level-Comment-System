@@ -109,7 +109,7 @@ export const loginUserService = async (email: string, password: string) => {
       {
         id: user.id,
       },
-      process.env.JWT_SECRET || "",
+      process.env.ACCESS_TOKEN_SECRET || "",
       {
         expiresIn: "24h",
       }

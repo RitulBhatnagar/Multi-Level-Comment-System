@@ -10,12 +10,9 @@ const commentLimiter = rateLimit({
   headers: true,
   keyGenerator: (req: Request) => req.body.user?.id || req.ip,
   handler: (req: Request, res: Response) => {
-    throw new APIError(
-      ErrorCommonStrings.TOO_MANY_REQUEST,
-      HttpStatusCode.TOO_MANY_REQUESTS,
-      true,
-      "Comment rate limit exceeded. Try again later."
-    );
+    return res.status(HttpStatusCode.TOO_MANY_REQUESTS).json({
+      message: "Too many comments created, please try again after 15 minutes.",
+    });
   },
 });
 
@@ -26,14 +23,9 @@ export const commentRateLimiter = (
 ) => {
   const user = req.body.user;
   if (!user) {
-    return next(
-      new APIError(
-        ErrorCommonStrings.NOT_AUTHORIZED,
-        HttpStatusCode.UNAUTHORIZED,
-        true,
-        "Authentication required for comment rate limiting"
-      )
-    );
+    return res.status(HttpStatusCode.UNAUTHORIZED).json({
+      message: "Authentication required for comment rate limiting",
+    });
   }
 
   commentLimiter(req, res, next);
