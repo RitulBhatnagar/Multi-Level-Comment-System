@@ -4,6 +4,12 @@ import APIError, { HttpStatusCode } from "../middlewares/errorMiddleware";
 import { localConstant } from "../utils/constant";
 import { createPostService } from "../services/post.service";
 
+/**
+ * Controller function to handle creating a new post.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 export const createPost = async (req: Request, res: Response) => {
   const { content, title } = req.body;
   const { userId: authorId } = req.body.user;

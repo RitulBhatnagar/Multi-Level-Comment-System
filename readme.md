@@ -11,22 +11,6 @@ This project implements a RESTful API for a social media platform that handles m
 - Retrieve comments with pagination and sorting
 - Rate limiting to prevent abuse
 
-## Technologies Used
-
-- Node.js
-- Express.js
-- TypeScript
-- Prisma ORM
-- PostgreSQL (Neon Database)
-- JSON Web Tokens (JWT) for authentication
-- Jest for testing
-
-## Prerequisites
-
-- Node.js (v14 or later)
-- npm or yarn
-- PostgreSQL database (local or cloud-based like Neon)
-
 ## Setup
 
 1. Clone the repository:
@@ -118,3 +102,20 @@ The API uses custom error handling middleware. All errors are returned in a cons
   "isOperational": true
 }
 ```
+
+## Architecture
+
+The project follows a layered architecture:
+
+1. **Controllers**: Handle HTTP requests and responses
+2. **Services**: Contain business logic and interact with the database
+3. **Models**: Define data structures and database schema (using Prisma)
+4. **Middlewares**: Handle cross-cutting concerns like authentication and error handling
+
+## Database
+
+The project uses PostgreSQL with Neon, a serverless PostgreSQL service. Prisma ORM is used for database operations, providing type-safe database access.
+
+## Authentication
+
+JSON Web Tokens (JWT) are used for user authentication. Protected routes require a valid JWT in the Authorization header.

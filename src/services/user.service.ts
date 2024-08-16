@@ -1,5 +1,5 @@
 import { PrismaClient, User, Prisma } from "@prisma/client";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import logger from "../utils/logger";
 import jwt from "jsonwebtoken";
 import APIError, { HttpStatusCode } from "../middlewares/errorMiddleware";
@@ -23,7 +23,7 @@ export const registerUserService = async (
 ): Promise<User> => {
   try {
     // Hash the password using bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await argon2.hash(password);
 
     // Create a new user in the database
     const user = await prisma.user.create({
@@ -92,7 +92,7 @@ export const loginUserService = async (email: string, password: string) => {
     }
 
     // Compare the password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await argon2.verify(user.password, password);
 
     // If the password is invalid, throw an UNAUTHORIZED_REQUEST error
     if (!isPasswordValid) {
@@ -118,6 +118,7 @@ export const loginUserService = async (email: string, password: string) => {
     // Return the authentication token
     return token;
   } catch (error) {
+    logger.error("Error in logging in user service", error);
     if (error instanceof APIError) {
       // If the error is an instance of APIError, rethrow it
       throw error;
