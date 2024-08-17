@@ -178,7 +178,12 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "Comment created successfully",
         "comment": {
-          // comment details
+          "id": 59,
+        "text": "doing the comments and more comments and more",
+        "createdAt": "2024-08-17T04:17:39.813Z",
+        "postId": 42,
+        "authorId": 75,
+        "parentCommentId": null
         }
       }
       ```
@@ -209,7 +214,12 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "Reply created successfully",
         "reply": {
-          // reply details
+          "id": 60,
+        "text": "doing the replies",
+        "createdAt": "2024-08-17T04:17:52.308Z",
+        "postId": 42,
+        "authorId": 74,
+        "parentCommentId": 50
         }
       }
       ```
