@@ -78,8 +78,11 @@ http://comment.us-east-1.elasticbeanstalk.com
       ```json
       {
         "message": "User created successfully",
-        "registerUser": {
-          // user details
+       "registerUser": {
+        "id": 74,
+        "email": "ritul15@gmail.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$rOVB2oz2TWAWf/7Nhm2zlg$zIQxYbUX9KWSMHg14BO1rTAz6pvqIBFnbRR4PClFPLc",
+        "name": "Ritul"
         }
       }
       ```
@@ -105,7 +108,7 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "User logged in successfully",
         "loginUser": {
-          // user details and token
+           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImlhdCI6MTcyMzg2NjUyMywiZXhwIjoxNzIzOTUyOTIzfQ.pCajvINQ5wXLsogRZxGVGbi2nbdGICNyJXYQz1tV6MQ"
         }
       }
       ```
@@ -139,7 +142,10 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "Post created successfully",
         "post": {
-          // post details
+         "id": 42,
+        "title": "Nothing",
+        "content": "there has to be some content",
+        "authorId": 74
         }
       }
       ```
@@ -225,7 +231,35 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "Comments retrieved successfully",
         "comments": [
-          // array of comments
+            {
+            "id": 50,
+            "text": "doing the comments",
+            "createdAt": "2024-08-17T03:50:16.374Z",
+            "postId": 42,
+            "parentCommentId": null,
+            "replies": [
+                {
+                    "id": 58,
+                    "text": "doing the replies",
+                    "createdAt": "2024-08-17T03:53:19.651Z"
+                },
+                {
+                    "id": 57,
+                    "text": "doing the replies",
+                    "createdAt": "2024-08-17T03:53:17.980Z"
+                }
+            ],
+            "totalReplies": 7
+        },
+        {
+            "id": 51,
+            "text": "doing the comments and more comments",
+            "createdAt": "2024-08-17T03:50:30.663Z",
+            "postId": 42,
+            "parentCommentId": null,
+            "replies": [],
+            "totalReplies": 0
+        }
         ]
       }
       ```
@@ -247,11 +281,37 @@ http://comment.us-east-1.elasticbeanstalk.com
       {
         "message": "Comments expanded successfully",
         "comments": [
-          // array of expanded comments
+          {
+            "id": 58,
+            "text": "doing the replies",
+            "createdAt": "2024-08-17T03:53:19.651Z",
+            "postId": 42,
+            "parentCommentId": 50,
+            "replies": [],
+            "totalReplies": 0
+        },
+        {
+            "id": 57,
+            "text": "doing the replies",
+            "createdAt": "2024-08-17T03:53:17.980Z",
+            "postId": 42,
+            "parentCommentId": 50,
+            "replies": [],
+            "totalReplies": 0
+        },
+        {
+            "id": 56,
+            "text": "doing the replies",
+            "createdAt": "2024-08-17T03:53:16.197Z",
+            "postId": 42,
+            "parentCommentId": 50,
+            "replies": [],
+            "totalReplies": 0
+        }
         ],
-        "total": number,
-        "page": number,
-        "pageSize": number
+         "total": 7,
+         "page": 1,
+         "pageSize": 3
       }
       ```
 
