@@ -2,6 +2,14 @@
 
 This project implements a RESTful API for a social media platform that handles multi-level comments on posts. It allows users to create comments, reply to existing comments, and retrieve comments with pagination.
 
+## BASE URL FOR THIS PROJECT
+
+### The base URL for the API is:
+
+```
+http://comment.us-east-1.elasticbeanstalk.com
+```
+
 ## Features
 
 - User authentication (registration and login)

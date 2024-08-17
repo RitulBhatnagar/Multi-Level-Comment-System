@@ -5,19 +5,20 @@ dotenv.config();
 import userRoute from "./routes/user.routes";
 import commentRoutes from "./routes/comment.routes";
 import postRoutes from "./routes/post.routes";
+import healthRoute from "./routes/health.routes";
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+// health check
+app.use("/", healthRoute);
+// user route
 app.use("/api", userRoute);
+// comment route
 app.use("/api", commentRoutes);
+// post route
 app.use("/api", postRoutes);
-
-app.get("/", (req, res) => {
-  logger.info("Received request for root path");
-  res.send("Health status is up and running ✅");
-});
 
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);
