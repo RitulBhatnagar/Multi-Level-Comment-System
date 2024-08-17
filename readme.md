@@ -13,7 +13,7 @@ http://comment.us-east-1.elasticbeanstalk.com
 ## Features
 
 - User authentication (registration and login)
-- Create and manage posts
+- Create post
 - Create comments on posts
 - Reply to existing comments
 - Retrieve comments with pagination and sorting
@@ -57,21 +57,230 @@ http://comment.us-east-1.elasticbeanstalk.com
 
 ### Authentication
 
-- `POST /api/register`: Register a new user
-- `POST /api/login`: Login a user
+- **Register a new user**
+
+  - **URL:** `POST /api/register`
+  - **Body:**
+
+    ```json
+    {
+      "name": "string",
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+  - **Success Response:**
+
+    - **Code:** 201 CREATED
+    - **Content:**
+
+      ```json
+      {
+        "message": "User created successfully",
+        "registerUser": {
+          // user details
+        }
+      }
+      ```
+
+- **Login a user**
+
+  - **URL:** `POST /api/login`
+  - **Body:**
+
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+  - **Success Response:**
+
+    - **Code:** 200 OK
+    - **Content:**
+
+      ```json
+      {
+        "message": "User logged in successfully",
+        "loginUser": {
+          // user details and token
+        }
+      }
+      ```
 
 ### Posts
 
-- `POST /api/posts`: Create a new post
-- `GET /api/posts`: Get all posts
-- `GET /api/posts/:postId`: Get a specific post
+- **Create a new post**
+
+  - **URL:** `POST /api/post`
+  - **Headers:**
+
+    ```http
+    Authorization: Bearer [token]
+    ```
+
+  - **Body:**
+
+    ```json
+    {
+      "content": "string",
+      "title": "string"
+    }
+    ```
+
+  - **Success Response:**
+
+    - **Code:** 201 CREATED
+    - **Content:**
+
+      ```json
+      {
+        "message": "Post created successfully",
+        "post": {
+          // post details
+        }
+      }
+      ```
 
 ### Comments
 
-- `POST /api/posts/:postId/comments`: Create a new comment on a post
-- `POST /api/posts/:postId/comments/:commentId/reply`: Reply to an existing comment
-- `GET /api/posts/:postId/comments`: Get comments for a post
-- `GET /api/posts/:postId/comments/:commentId/expand`: Expand parent-level comments
+- **Create a new comment on a post**
+
+  - **URL:** `POST /api/posts/:postId/comments`
+  - **Headers:**
+
+    ```http
+    Authorization: Bearer [token]
+    ```
+
+  - **Body:**
+
+    ```json
+    {
+      "text": "string"
+    }
+    ```
+
+  - **Success Response:**
+
+    - **Code:** 201 CREATED
+    - **Content:**
+
+      ```json
+      {
+        "message": "Comment created successfully",
+        "comment": {
+          // comment details
+        }
+      }
+      ```
+
+- **Reply to an existing comment**
+
+  - **URL:** `POST /api/posts/:postId/comments/:commentId/reply`
+  - **Headers:**
+
+    ```http
+    Authorization: Bearer [token]
+    ```
+
+  - **Body:**
+
+    ```json
+    {
+      "text": "string"
+    }
+    ```
+
+  - **Success Response:**
+
+    - **Code:** 201 CREATED
+    - **Content:**
+
+      ```json
+      {
+        "message": "Reply created successfully",
+        "reply": {
+          // reply details
+        }
+      }
+      ```
+
+- **Get comments for a post**
+
+  - **URL:** `GET /api/posts/:postId/comments`
+  - **Query Parameters:**
+
+    - `sortBy`: string (optional)
+    - `sortOrder`: "asc" | "desc" (optional)
+
+  - **Success Response:**
+
+    - **Code:** 200 OK
+    - **Content:**
+
+      ```json
+      {
+        "message": "Comments retrieved successfully",
+        "comments": [
+          // array of comments
+        ]
+      }
+      ```
+
+- **Expand parent-level comments**
+
+  - **URL:** `GET /api/posts/:postId/comments/:commentId/expand`
+  - **Query Parameters:**
+
+    - `page`: number
+    - `pageSize`: number
+
+  - **Success Response:**
+
+    - **Code:** 200 OK
+    - **Content:**
+
+      ```json
+      {
+        "message": "Comments expanded successfully",
+        "comments": [
+          // array of expanded comments
+        ],
+        "total": number,
+        "page": number,
+        "pageSize": number
+      }
+      ```
+
+## Error Responses
+
+All endpoints may return the following error responses:
+
+- **Code:** 400 BAD REQUEST
+
+  ```json
+  {
+    "message": "Error message describing the issue"
+  }
+  ```
+
+- **Code:** 401 UNAUTHORIZED
+
+  ```json
+  {
+    "message": "Authentication failed"
+  }
+  ```
+
+- **Code:** 500 INTERNAL SERVER ERROR
+  ```json
+  {
+    "message": "Internal server error message"
+  }
+  ```
 
 ## Testing
 
